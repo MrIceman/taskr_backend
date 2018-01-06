@@ -1,0 +1,9 @@
+TASK-BOARD
+
+create:
+
+{"title": "Family Nowosad", "description": "This is our personal TaskBoard, Marty+Sandy", "secret": "coffee", "public_id": "flask_taskr"}
+
+
+get:
+{"id": "1"}

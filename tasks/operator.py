@@ -21,7 +21,7 @@ def create_task_board(**kwargs):
     return t.serialize()
 
 
-#BUG: creates a Response object which is not Serializable.. -_-
+# BUG: creates a Response object which is not Serializable.. -_-
 def get_all_taskboards():
     data = TaskBoard.query.all()
     print(data)
@@ -31,3 +31,13 @@ def get_all_taskboards():
         result.append(task.serialize())
     print(result)
     return jsonify(result)
+
+
+def get_taskboard_by_public_id(public_id, json=False):
+    with get_db_session(commit=False) as session:
+        result = session.query(TaskBoard).filter(TaskBoard.public_id.is_(public_id)).first()
+    if result is None:
+        return 'No TaskBoard with public id {} found'.format(public_id)
+    if json:
+        return result.serialize()
+    return result

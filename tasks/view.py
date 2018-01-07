@@ -1,6 +1,7 @@
 from tasks import task_page
 from flask import request
-from tasks.operator import get_task_board_by_id, create_task_board, get_all_taskboards
+from tasks.operator import get_taskboard_by_public_id, \
+    get_task_board_by_id, create_task_board, get_all_taskboards
 
 
 @task_page.route('/taskboard/get/', methods=['POST', 'GET'])
@@ -9,8 +10,12 @@ def get_board():
         return 'Only post requests are valid'
 
     data = request.json
-    id = data['id']
-    return get_task_board_by_id(id, json=True)
+    if 'public_id' in data:
+        return get_taskboard_by_public_id(data['public_id'], json=True)
+    if 'id' in data:
+        id = data['id']
+        return get_task_board_by_id(id, json=True)
+    return 'Wrong Keys. Received: {}'.format(data)
 
 
 @task_page.route('/taskboard/get/all')
@@ -20,6 +25,7 @@ def get_all_boards():
 
 @task_page.route('/taskboard/create/', methods=['POST'])
 def create_task():
+    required_keys = ['secret', ]
     data = request.json
     if 'id' in data:
         return 'You can not set your own ID, dude!'

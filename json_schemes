@@ -2,8 +2,15 @@ TASK-BOARD
 
 create:
 
-{"title": "Family Nowosad", "description": "This is our personal TaskBoard, Marty+Sandy", "secret": "coffee", "public_id": "flask_taskr"}
+{"title": "Family Nowosad", "description": "This is our personal TaskBoard, Marty+Sandy", "secret": "coffee", "public_id": "Mindy"}
 
 
 get:
 {"id": "1"}
+
+    /**
+     * Custom Json Data:
+     * {"title": "Family Nowosad",
+     "description": "This is our personal TaskBoard",
+     * "secret": "secret password", "public_id": "public_id"
+     */

@@ -15,3 +15,6 @@ It is written completely in Python and uses Flask + postgresql (psycopg2).</br>
 </li>
 </ol><br/>
 Congratulations, your Backend is running.</b>
+<br><h1>Data Schema</h1>
+<i>Soon..</i><br><br>
+<h1>API Endpoints</h1><br><i>Soon...</i><br><br>

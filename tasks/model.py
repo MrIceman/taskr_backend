@@ -3,22 +3,12 @@ from database.manager import db
 forbidden_chars = ['<', '>', '#', '_', 'metadata', ]
 
 
-class AbstractDbModel():
-    methods = []
+class AbstractDbModel:
 
     def __init__(self, **kwargs):
-        # everything that should be ignored when serializing / deserializing
-        self.methods.append('serialize')
-        self.methods.append('deserialize')
-        self.methods.append('methods')
-
         for key, value in kwargs.items():
             if key in self.__dir__():
                 self.__setattr__(key, value)
-        # setting custom flags, which determine if any additional attributes should be ignored
-        if 'flags' in kwargs:
-            for flag in kwargs['flags']:
-                self.methods.append(flag)
 
 
 class TaskBoard(AbstractDbModel, db.Model):
@@ -35,17 +25,17 @@ class TaskBoard(AbstractDbModel, db.Model):
 
     def serialize(self):
         print('Serializing..')
-        from flask import jsonify
-        result = dict()
-        result['id'] = self.id
-        result['title'] = self.title
-        result['description'] = self.description
-        result['secret'] = self.secret
-        result['public_id'] = self.public_id
-        result['created_on'] = self.created_on
-        result['max_tasks'] = self.max_tasks
-        result['last_update'] = self.last_update
-        return jsonify(result)
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'secret': self.secret,
+            'public_id': self.public_id,
+            'created_on': self.created_on,
+            'max_tasks': self.max_tasks,
+            'last_update': self.last_update,
+            'tasks': [item.serialize() for item in self.tasks]
+        }
 
 
 class Task(AbstractDbModel, db.Model):
@@ -53,4 +43,24 @@ class Task(AbstractDbModel, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.Text, default='No Title')
     content = db.Column(db.Text, default='No Content yet')
+    author = db.Column(db.Text, nullable=False, default='Anon')
+    date = db.Column(db.DateTime, default=db.func.now())
     taskboard_id = db.Column(db.Integer, db.ForeignKey(column='taskboard.id', name='taskboard'))
+
+    def serialize(self):
+        print('Serializing..')
+        result = dict()
+        result['id'] = self.id
+        result['title'] = self.title
+        result['content'] = self.content
+        result['author'] = self.author
+        result['date'] = self.date
+        result['taskboard_id'] = self.taskboard_id
+        return {
+            'id': self.id,
+            'title': self.title,
+            'content': self.content,
+            'author': self.author,
+            'date': self.date,
+            'taskboard_id': self.taskboard_id,
+        }

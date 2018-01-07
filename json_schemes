@@ -1,16 +1,15 @@
 TASK-BOARD
 
-create:
-
+creating a TaskBoard:
 {"title": "Family Nowosad", "description": "This is our personal TaskBoard, Marty+Sandy", "secret": "coffee", "public_id": "Mindy"}
 
+creating a Task:
+{"title": "Write your Serminararbeit", "content": "You can do it, only 65 pages left..", "taskboard_id": 1, "author": "Marty"}
 
-get:
+getting a taskboard by id:
 {"id": "1"}
 
-    /**
-     * Custom Json Data:
-     * {"title": "Family Nowosad",
-     "description": "This is our personal TaskBoard",
-     * "secret": "secret password", "public_id": "public_id"
-     */
+getting a taskboard by public_id:
+{"public_id": "Mindy"}
+
+
